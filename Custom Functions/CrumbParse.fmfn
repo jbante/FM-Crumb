@@ -1,0 +1,63 @@
+/**
+ * =====================================
+ * CrumbParse ( theLayoutName )
+ *
+ * RETURNS:
+ *		A return-delimited list of attributes useful for global navigation parsed from
+ *		theLayoutName:
+ *		- The name of the module implied by the layout name
+ *		- The name of the module page implied by the layout name
+ *		- A boolean flag indicating whether or not the layout should be visible in global
+ *		navigation — True (1) if the layout should be visible, False (0) otherwise.
+ *
+ * PARAMETERS:
+ *		theLayoutName: The name of the layout to parse
+ *
+ * DEPENDENCIES: none
+ *
+ * NOTES:
+ *		Notes go here
+ *
+ * HISTORY:
+ *		CREATED on 2012-10-15 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+If (
+	IsEmpty ( theLayoutName )
+	or IsEmpty ( Substitute ( theLayoutName ; "-"; "" ) );	// separator layout
+		theLayoutName;
+
+	/* Else */
+	Let ( [
+		CrumbHidePrefix = "~";
+		CrumbSeparator = ": ";
+		~isVisible = Position ( theLayoutName  ; CrumbHidePrefix ; 1 ; 1 ) ≠ 1;
+		~separatorPosition = Position ( theLayoutName ; CrumbSeparator ; 1 ; 1 );
+
+		~moduleStart =
+			If ( ~isVisible ; 1 ; /* Else */ Length ( CrumbHidePrefix ) + 1 );
+		~moduleEnd =
+			If ( ~separatorPosition = 0;	// if separator was not found
+				Length ( theLayoutName ) + 1;
+				/* Else */ ~separatorPosition
+			);
+		~module = Middle ( theLayoutName ; ~moduleStart ; ~moduleEnd - ~moduleStart );
+
+		~pageStart =
+			If ( ~separatorPosition = 0;	// if separator was not found
+				~moduleStart;
+				/* Else */ ~separatorPosition + Length ( CrumbSeparator )
+			);
+		~page =
+			Middle (
+				theLayoutName;
+				~pageStart;
+				Length ( theLayoutName ) - ~pageStart + 1
+			)
+	];
+		~module
+		& ¶ & ~page
+		& ¶ & ~isVisible
+	)
+)
