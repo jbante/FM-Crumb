@@ -15,9 +15,6 @@
  * VARIABLES:
  *		$$CRUMB.LAYOUTIDLIST: A return-delimited list of layoutID-module-page triplets
  *
- * NOTES:
- *		Notes go here
- *
  * HISTORY:
  *		CREATED on 2012-10-18 by Jeremy Bante <http://scr.im/jbante>.
  * =====================================

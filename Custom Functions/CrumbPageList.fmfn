@@ -1,0 +1,30 @@
+/**
+ * =====================================
+ * CrumbPageList ( module )
+ *
+ * RETURNS:
+ *		A return-delimited list of loaded Crumb page names for a specified module suitable
+ *		for displaying in a tooltip.
+ *
+ * PARAMETERS:
+ *		module: A Crumb module number
+ *
+ * DEPENDENCIES: none
+ *
+ * VARIABLES:
+ *		$$CRUMB.PAGELIST[module]: List of loaded Crumb page names for a module
+ *
+ * HISTORY:
+ *		CREATED on 2012-10-18 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+Let ( [
+	~pageList = ¶ & $$CRUMB.PAGELIST[module] & ¶;
+	~start = Position ( ~pageList ; "¶/*¶" ; 1 ; 1 );
+	~end = Position ( ~pageList ; "¶*/¶" ; ~start ; 1 )
+];
+	If ( ~start > 0 and ~end > 0;
+		Middle ( ~pageList ; ~start + 4 ; ~end - ~start - 4 )
+	)
+)
