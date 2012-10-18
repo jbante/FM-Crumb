@@ -1,0 +1,39 @@
+/**
+ * =====================================
+ * CrumbGetLayoutNumber ( layoutIDList ; module ; page )
+ *
+ * RETURNS:
+ *		The layout number matching the specified Crumb moduleNumber and pageNumber.
+ *
+ * PARAMETERS:
+ *		layoutIDList: A return-delimited list of layouts IDs
+ *		module: The Crumb module number for a layout
+ *		page: The Crumb page number for a layout
+ *
+ * DEPENDENCIES: none
+ *
+ * VARIABLES:
+ *		$$CRUMB.LAYOUTIDLIST: A return-delimited list of layoutID-module-page triplets
+ *
+ * NOTES:
+ *		Notes go here
+ *
+ * HISTORY:
+ *		CREATED on 2012-10-18 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+Let ( [
+	// Get layoutID from $$CRUMB.LAYOUTIDLIST
+	crumbList = $$CRUMB.LAYOUTIDLIST & ¶;
+	~end = Position ( crumbList ; "	" & module & "	" & page & ¶ ; 1 ; 1 );
+	~start = Position ( crumbList ; ¶ ; ~end ; -1 ) + 1;
+	~layoutID = Middle ( crumbList ; ~start ; ~end - ~start );
+
+	// Get value position within layoutIDList
+	layoutIDList = ¶ & layoutIDList & ¶;
+	~listEnd = Position ( layoutIDList ; ¶ & ~layoutID & ¶ ; 1 ; 1 );
+	~idPosition = ValueCount ( Left ( layoutIDList ; ~listEnd ) )
+];
+	If ( ~end = 0 or ~listEnd = 0 ; 0 ; /* Else */ ~idPosition )
+)
