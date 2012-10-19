@@ -1,0 +1,68 @@
+/**
+ * =====================================
+ * CrumbSetLayoutVariables ( currentLayoutID )
+ *
+ * PURPOSE:
+ *		Sets data from global variables to local variables for use by the Crumb navigation
+ *		framework.
+ *
+ * RETURNS:
+ *		The calculation evaluation error code generated while setting variables.
+ *
+ * PARAMETERS:
+ *		currentLayoutID: FileMaker's internal layout ID for the current layout
+ *
+ * DEPENDENCIES: none
+ *
+ * VARIABLES:
+ *		$crumb.currentModuleNumber
+ *		$crumb.currentPageNumber
+ *		$crumb.app.##
+ *		$crumb.module.##
+ *		$crumb.page.##
+ *		$$CRUMB.MODULELIST
+ *		$$CRUMB.PAGELIST[n]
+ *		$$CRUMB.LAYOUTIDLIST
+ *
+ * NOTES:
+ *		Notes go here
+ *
+ * HISTORY:
+ *		CREATED on 2012-10-19 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+Let ( [
+	~layoutIDList = ¶ & $$CRUMB.LAYOUTIDLIST & ¶;
+	~idStart =
+		Position ( ~layoutIDList ; ¶ & currentLayoutID & "	" ; 1 ; 1 );
+
+	// get module number
+	~moduleStart = Position ( ~layoutIDList ; "	" ; ~idStart ; 1 ) + 1;
+	~end = Position ( ~layoutIDList ; "	" ; ~moduleStart ; 1 );
+	$crumb.currentModuleNumber =
+		If ( ~idStart = 0;
+			"";
+			/* Else */ Middle ( ~layoutIDList ; ~moduleStart ; ~end - ~moduleStart )
+		);
+
+	// get page number
+	~pageStart = ~end + 1;
+	~end = Position ( ~layoutIDList ; ¶ ; ~pageStart ; 1 );
+	$crumb.currentPageNumber =
+		If ( ~idStart = 0;
+			"";
+			/* Else */ Middle ( ~layoutIDList ; ~pageStart ; ~end - ~pageStart )
+		)
+];
+	// set local variables for display as merge variables on current layout
+	EvaluationError ( Evaluate ( List (
+		"Let ( [";
+		$$CRUMB.MODULELIST;
+		$$CRUMB.PAGELIST[$crumb.currentModuleNumber];
+		If ( $crumb.currentModuleNumber ≠ -1;
+			$$CRUMB.PAGELIST[-1]	// set page variables for reserved "App" module
+		);
+		"~ = \"\" ]; False )"
+	) ) )
+)
