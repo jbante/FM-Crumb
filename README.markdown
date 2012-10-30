@@ -6,7 +6,7 @@ The basic idea is that the layout names in a FileMaker file should describe the 
 
 There are other global navigation schemes in FileMaker, but most of them require the developer to duplicate information about the navigation structure that's already available in "Manage Layouts" and FileMaker's design functions. Some make developers update *every* layout whenever there's a change. Others store references to layouts in records in an extra table, including permissions information. That's silly.
 
-Crumb gets everything it needs to know from a file's layout names. It also inherits the layout permissions from FileMaker's built-in security: if the logged-in user can't see a particular layout, neither can Crumb, since the "Load Crumb Modules" script does not run will [Full Access] privileges.
+Crumb gets everything it needs to know from a file's layout names. It also inherits the layout permissions from FileMaker's built-in security: if the logged-in user can't see a particular layout, neither can Crumb, since the "Load Crumb Modules" script does not run with [Full Access] privileges.
 
 I'm currently working on re-writing it from scratch for FileMaker version 12. In the mean time, you can still use the original solution for FileMaker 11.
 
