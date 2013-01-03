@@ -3,8 +3,8 @@
  * CrumbSetLayoutVariables ( currentLayoutID )
  *
  * PURPOSE:
- *		Sets data from global variables to local variables for use by the Crumb navigation
- *		framework.
+ *		Sets data from global variables to local variables for use by the Crumb
+ *		navigation framework.
  *
  * RETURNS:
  *		The calculation evaluation error code generated while setting variables.
@@ -26,53 +26,58 @@
  *
  * NOTES:
  *		This function will not do anything if the $crumb.currentModuleNumber and
- *		$crumb.currentPageNumber variables are already set. This is to improve the
- *		performance of rendering FileMaker layouts. As of FileMaker version 12v2, a
- *		conditional formatting calculations may be evaluated 4 times per window refresh;
- *		so functions intended to be used in conditional formatting calculations deserve
- *		special performance optimization attention.
+ *		$crumb.currentPageNumber variables are already set. This is to improve
+ *		the performance of rendering FileMaker layouts.
  *
  * HISTORY:
- *		MODIFIED on 2012-10-22 by Jeremy Bante <http://scr.im/jbante> to not do anything
- *		if currentModule and currentPage variables already have values.
+ *		MODIFIED on 2012-10-22 by Jeremy Bante <http://scr.im/jbante> to not do
+ *		anything if currentModule and currentPage variables already have values.
  *		CREATED on 2012-10-19 by Jeremy Bante <http://scr.im/jbante>.
  * =====================================
  */
 
-If ( IsEmpty ( $crumb.currentModuleNumber ) or IsEmpty ( $crumb.currentPageNumber );
-	Let ( [
-		~layoutIDList = ¶ & $$CRUMB.LAYOUTIDLIST & ¶;
-		~idStart =
-			Position ( ~layoutIDList ; ¶ & currentLayoutID & "	" ; 1 ; 1 );
+Case (
+	IsEmpty ( $crumb.currentModuleNumber )
+	or IsEmpty ( $crumb.currentPageNumber ) ;
+		Let ( [
+			~layoutIDList = ¶ & $$CRUMB.LAYOUTIDLIST & ¶ ;
+			~idStart =
+				Position (
+					~layoutIDList ;
+					¶ & currentLayoutID & "	" ;
+					1 ;
+					1
+				) ;
 
-		// get module number
-		~moduleStart = Position ( ~layoutIDList ; "	" ; ~idStart ; 1 ) + 1;
-		~end = Position ( ~layoutIDList ; "	" ; ~moduleStart ; 1 );
-		$crumb.currentModuleNumber =
-			If ( ~idStart = 0;
-				"";
-			/* Else */
-				Middle ( ~layoutIDList ; ~moduleStart ; ~end - ~moduleStart )
-			);
+			// get module number
+			~moduleStart = Position ( ~layoutIDList ; "	" ; ~idStart ; 1 ) + 1 ;
+			~end = Position ( ~layoutIDList ; "	" ; ~moduleStart ; 1 ) ;
+			$crumb.currentModuleNumber =
+				If ( ~idStart = 0 ;
+					"" ;
+				/* Else */
+					Middle ( ~layoutIDList ; ~moduleStart ; ~end - ~moduleStart )
+				) ;
 
-		// get page number
-		~pageStart = ~end + 1;
-		~end = Position ( ~layoutIDList ; ¶ ; ~pageStart ; 1 );
-		$crumb.currentPageNumber =
-			If ( ~idStart = 0;
-				"";
-				/* Else */ Middle ( ~layoutIDList ; ~pageStart ; ~end - ~pageStart )
-			)
-	];
-		// set local variables for display as merge variables on current layout
-		EvaluationError ( Evaluate ( List (
-			"Let ( [";
-			$$CRUMB.MODULELIST;
-			$$CRUMB.PAGELIST[$crumb.currentModuleNumber];
-			If ( $crumb.currentModuleNumber ≠ -1;
-				$$CRUMB.PAGELIST[-1]	// set variables for reserved "App" module
-			);
-			"~ = \"\" ]; False )"
-		) ) )
-	)
+			// get page number
+			~pageStart = ~end + 1 ;
+			~end = Position ( ~layoutIDList ; ¶ ; ~pageStart ; 1 ) ;
+			$crumb.currentPageNumber =
+				If ( ~idStart = 0 ;
+					"" ;
+				/* Else */
+					Middle ( ~layoutIDList ; ~pageStart ; ~end - ~pageStart )
+				)
+		] ;
+			// set variables for display as merge variables on layout
+			EvaluationError ( Evaluate ( List (
+				"Let ( [" ;
+				$$CRUMB.MODULELIST ;
+				$$CRUMB.PAGELIST[$crumb.currentModuleNumber] ;
+				If ( $crumb.currentModuleNumber ≠ -1 ;
+					$$CRUMB.PAGELIST[-1]	// set variables for "App" module
+				) ;
+				"~ = \"\" ]; False )"
+			) ) )
+		)
 )
