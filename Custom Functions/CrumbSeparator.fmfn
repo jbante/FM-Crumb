@@ -1,0 +1,18 @@
+/**
+ * =====================================
+ * CrumbSeparator
+ *
+ * RETURNS:
+ *		The text used as a delimiter in layout names between a module name and a
+ *		page name within the Crumb navigation scheme.
+ *
+ * PARAMETERS: none
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		CREATED on 2013-02-24 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+": "

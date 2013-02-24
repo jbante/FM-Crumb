@@ -1,0 +1,18 @@
+/**
+ * =====================================
+ * CrumbHidePrefix
+ *
+ * RETURNS:
+ *		The text used as a prefix in layout names to indicate layouts that
+ *		should not be exposed to users in global navigation tools.
+ *
+ * PARAMETERS: none
+ *
+ * DEPENDENCIES: none
+ *
+ * HISTORY:
+ *		CREATED on 2013-02-24 by Jeremy Bante <http://scr.im/jbante>.
+ * =====================================
+ */
+
+"~"
