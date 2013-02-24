@@ -27,5 +27,10 @@ Because a hyphen "-" is used for the names of layout separators, Crumb will trea
 
 The Crumbs for a given system are stored in a data structure in a single global variable for reference by various calculations and scripts.
 
-moduleList:	A return-delimited list of the names of modules within the file
-<moduleName>:	A return-delimited list of the Crumb objects for each page in moduleName
+moduleNumber	pageNumber	moduleName	pageName	layoutID
+-1	1	App	Help	101
+-1	2	App	About	102
+1	1	Crumb	Crumb	104
+1	2	Crumb	Introduction	123
+1	3	Crumb	Install	112
+1	4	Crumb	How It Works	143
